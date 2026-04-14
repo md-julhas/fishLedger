@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,7 +20,8 @@
         --card-background: #ffffff;
         --text-color: #1f2937;
         --border-color: #e5e7eb;
-        --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        --shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
           0 4px 6px -2px rgba(0, 0, 0, 0.05);
       }
 
@@ -125,7 +126,9 @@
         cursor: pointer;
         color: #fff;
         font-weight: 600;
-        transition: background-color 0.3s ease, transform 0.1s;
+        transition:
+          background-color 0.3s ease,
+          transform 0.1s;
       }
 
       button.tab-btn {
@@ -135,7 +138,9 @@
         border: 1px solid var(--border-color);
         font-weight: 700;
         width: 100%;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
       }
 
       button.tab-btn.active {
@@ -229,7 +234,9 @@
         margin: 8px 1px;
         padding: 0;
         font-size: 1.1rem;
-        transition: color 0.2s, transform 0.1s;
+        transition:
+          color 0.2s,
+          transform 0.1s;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -376,66 +383,66 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         // Entry Items Type Buttons
-        const mixFishBtn = document.getElementById("mixFishBtn");
-        const hilsaMonBtn = document.getElementById("hilsaMonBtn");
+        const mixFishBtn = document.getElementById("mixFishBtn")
+        const hilsaMonBtn = document.getElementById("hilsaMonBtn")
 
         // Entry Form Elements
-        const inputContainer = document.getElementById("input-container");
-        const addItemBtn = document.getElementById("addItemBtn");
+        const inputContainer = document.getElementById("input-container")
+        const addItemBtn = document.getElementById("addItemBtn")
         let currentItemType =
-          localStorage.getItem("activeFormType") || "mix_fish";
+          localStorage.getItem("activeFormType") || "mix_fish"
 
         // Lists for displaying items
-        const hilsaItemsListDiv = document.getElementById("hilsaItemsList");
-        const mixItemsListDiv = document.getElementById("mixItemsList");
-        const totalAmountSpan = document.getElementById("totalAmount");
-        const clearAllBtn = document.getElementById("clearAllBtn");
-        const downloadPdfBtn = document.getElementById("downloadPdfBtn");
+        const hilsaItemsListDiv = document.getElementById("hilsaItemsList")
+        const mixItemsListDiv = document.getElementById("mixItemsList")
+        const totalAmountSpan = document.getElementById("totalAmount")
+        const clearAllBtn = document.getElementById("clearAllBtn")
+        const downloadPdfBtn = document.getElementById("downloadPdfBtn")
 
-        let isEditing = false;
-        let editIndex = null;
+        let isEditing = false
+        let editIndex = null
 
         // --- Utility Functions ---
         const formatNumberWithCommas = (number) => {
           if (typeof number !== "number" || isNaN(number)) {
-            return "0";
+            return "0"
           }
-          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        };
+          return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
 
         const parseNumber = (str) => {
-          const value = String(str).replace(/,/g, "");
-          return parseFloat(value) || 0;
-        };
+          const value = String(str).replace(/,/g, "")
+          return parseFloat(value) || 0
+        }
 
         const formatInput = (input) => {
-          const value = input.value.replace(/,/g, "");
+          const value = input.value.replace(/,/g, "")
           if (value) {
-            input.value = formatNumberWithCommas(parseInt(value, 10));
+            input.value = formatNumberWithCommas(parseInt(value, 10))
           }
-        };
+        }
 
         // --- Dynamic Form Logic ---
         const renderForm = (type, data = {}) => {
-          inputContainer.innerHTML = "";
+          inputContainer.innerHTML = ""
           let html = `<input type="text" id="itemName" placeholder="Buyer Name (optional)" value="${
             data.name || ""
-          }"/>`;
-          let priceInputId = "containerPrice";
+          }"/>`
+          let priceInputId = "containerPrice"
 
           switch (type) {
             case "mix_fish":
               html += `<input type="text" id="${priceInputId}" placeholder="Container Price" required inputmode="decimal" pattern="[0-9.,]*" value="${
                 data.price ? formatNumberWithCommas(data.price) : ""
-              }"/>`;
-              break;
+              }"/>`
+              break
             case "hilsa_mon":
               html += `
                             <div class="hilsa-price-mon-row">
                                 <input type="text" id="hilsaPrice" placeholder="Mon Price" inputmode="decimal" pattern="[0-9.,]*" value="${
                                   data.hilsaInfo && data.hilsaInfo.monPrice
                                     ? formatNumberWithCommas(
-                                        data.hilsaInfo.monPrice
+                                        data.hilsaInfo.monPrice,
                                       )
                                     : ""
                                 }">
@@ -458,80 +465,82 @@
                                 }">
                             </div>
                             <input type="text" id="${priceInputId}" placeholder="Total Mon Amount" required inputmode="decimal" pattern="[0-9.,]*" value="${
-                data.price ? formatNumberWithCommas(data.price) : ""
-              }">
-                        `;
-              break;
+                              data.price
+                                ? formatNumberWithCommas(data.price)
+                                : ""
+                            }">
+                        `
+              break
           }
 
-          inputContainer.innerHTML = html;
-          const currentPriceInput = document.getElementById(priceInputId);
+          inputContainer.innerHTML = html
+          const currentPriceInput = document.getElementById(priceInputId)
           currentPriceInput.addEventListener("input", () =>
-            formatInput(currentPriceInput)
-          );
+            formatInput(currentPriceInput),
+          )
 
           // Add event listeners for Enter key on all input fields
-          const inputs = inputContainer.querySelectorAll('input');
+          const inputs = inputContainer.querySelectorAll("input")
           inputs.forEach((input, index) => {
-            input.addEventListener('keydown', (e) => {
-              if (e.key === 'Enter' || e.keyCode === 13) {
-                e.preventDefault();
+            input.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.keyCode === 13) {
+                e.preventDefault()
                 if (index < inputs.length - 1) {
                   // Focus on next input if not the last one
-                  inputs[index + 1].focus();
+                  inputs[index + 1].focus()
                 } else {
                   // If it's the last input, trigger the add item button
-                  addItemBtn.click();
+                  addItemBtn.click()
                 }
               }
-            });
-          });
+            })
+          })
 
           if (type === "hilsa_mon") {
-            const hilsaPriceInput = document.getElementById("hilsaPrice");
-            const monInput = document.getElementById("mon");
-            const kgInput = document.getElementById("kg");
-            const gramInput = document.getElementById("gram");
+            const hilsaPriceInput = document.getElementById("hilsaPrice")
+            const monInput = document.getElementById("mon")
+            const kgInput = document.getElementById("kg")
+            const gramInput = document.getElementById("gram")
             hilsaPriceInput.addEventListener("input", () =>
-              formatInput(hilsaPriceInput)
-            );
-            [hilsaPriceInput, monInput, kgInput, gramInput].forEach((input) =>
+              formatInput(hilsaPriceInput),
+            )
+            ;[hilsaPriceInput, monInput, kgInput, gramInput].forEach((input) =>
               input.addEventListener("input", () => {
-                updateHilsaMonTotal();
-                if (!isEditing) saveHilsaMonData();
-              })
-            );
+                updateHilsaMonTotal()
+                if (!isEditing) saveHilsaMonData()
+              }),
+            )
             document
               .getElementById("itemName")
               .addEventListener("input", () => {
-                if (!isEditing) saveHilsaMonData();
-              });
+                if (!isEditing) saveHilsaMonData()
+              })
           }
-        };
+        }
 
         const updateHilsaMonTotal = () => {
           const hilsaPrice = parseNumber(
-            document.getElementById("hilsaPrice").value
-          );
-          const mon = parseFloat(document.getElementById("mon").value) || 0;
-          const kg = parseFloat(document.getElementById("kg").value) || 0;
-          const gram = parseFloat(document.getElementById("gram").value) || 0;
-          const pricePerKg = hilsaPrice / 40;
-          const totalKg = mon * 40 + kg + gram / 1000;
-          const total = totalKg * pricePerKg;
+            document.getElementById("hilsaPrice").value,
+          )
+          const mon = parseFloat(document.getElementById("mon").value) || 0
+          const kg = parseFloat(document.getElementById("kg").value) || 0
+          const gram = parseFloat(document.getElementById("gram").value) || 0
+          const pricePerKg = hilsaPrice / 40
+          const totalKg = mon * 40 + kg + gram / 1000
+          const total = totalKg * pricePerKg
           document.getElementById("containerPrice").value =
-            formatNumberWithCommas(Math.round(total));
-        };
+            formatNumberWithCommas(Math.round(total))
+        }
 
         // --- Local Storage for Hilsa Mon form ---
         const saveHilsaMonData = () => {
-          const itemName = document.getElementById("itemName").value;
+          const itemName = document.getElementById("itemName").value
           const hilsaPrice = parseNumber(
-            document.getElementById("hilsaPrice").value
-          );
-          const mon = parseFloat(document.getElementById("mon").value) || 0;
-          const kg = parseFloat(document.getElementById("kg").value) || 0;
-          const gram = parseFloat(document.getElementById("gram").value) || 0;
+            document.getElementById("hilsaPrice").value,
+          )
+          const mon = parseFloat(document.getElementById("mon").value) || 0
+          const kg = parseFloat(document.getElementById("kg").value) || 0
+          const gram = parseFloat(document.getElementById("gram").value) || 0
 
           // Check if all fields are empty or 0
           if (
@@ -541,8 +550,8 @@
             kg === 0 &&
             gram === 0
           ) {
-            clearHilsaMonData();
-            return;
+            clearHilsaMonData()
+            return
           }
 
           const data = {
@@ -554,136 +563,136 @@
               gram: gram,
             },
             price: parseNumber(document.getElementById("containerPrice").value),
-          };
-          localStorage.setItem("hilsaMonFormData", JSON.stringify(data));
-        };
+          }
+          localStorage.setItem("hilsaMonFormData", JSON.stringify(data))
+        }
 
         const loadHilsaMonData = () => {
-          const data = localStorage.getItem("hilsaMonFormData");
+          const data = localStorage.getItem("hilsaMonFormData")
           if (data) {
-            const parsedData = JSON.parse(data);
+            const parsedData = JSON.parse(data)
             if (parsedData) {
-              return parsedData;
+              return parsedData
             }
           }
-          return {};
-        };
+          return {}
+        }
 
         const clearHilsaMonData = () => {
-          localStorage.removeItem("hilsaMonFormData");
-        };
+          localStorage.removeItem("hilsaMonFormData")
+        }
 
         // --- Event Listeners for Type Buttons ---
         mixFishBtn.addEventListener("click", () => {
-          currentItemType = "mix_fish";
+          currentItemType = "mix_fish"
           document
             .querySelectorAll(".type-btn")
-            .forEach((btn) => btn.classList.remove("active"));
-          mixFishBtn.classList.add("active");
-          renderForm(currentItemType);
-          addItemBtn.textContent = "Add Item";
-          isEditing = false;
-        });
+            .forEach((btn) => btn.classList.remove("active"))
+          mixFishBtn.classList.add("active")
+          renderForm(currentItemType)
+          addItemBtn.textContent = "Add Item"
+          isEditing = false
+        })
 
         hilsaMonBtn.addEventListener("click", () => {
-          currentItemType = "hilsa_mon";
+          currentItemType = "hilsa_mon"
           document
             .querySelectorAll(".type-btn")
-            .forEach((btn) => btn.classList.remove("active"));
-          hilsaMonBtn.classList.add("active");
-          const savedData = loadHilsaMonData();
-          renderForm(currentItemType, savedData);
-          addItemBtn.textContent = "Add Item";
-          isEditing = false;
-        });
+            .forEach((btn) => btn.classList.remove("active"))
+          hilsaMonBtn.classList.add("active")
+          const savedData = loadHilsaMonData()
+          renderForm(currentItemType, savedData)
+          addItemBtn.textContent = "Add Item"
+          isEditing = false
+        })
 
         // --- Add/Save Item Logic ---
         addItemBtn.addEventListener("click", () => {
-          const items = JSON.parse(localStorage.getItem("hilsaAppItems")) || [];
-          const priceInput = document.getElementById("containerPrice");
-          const itemName = document.getElementById("itemName").value;
-          const price = parseNumber(priceInput.value);
+          const items = JSON.parse(localStorage.getItem("hilsaAppItems")) || []
+          const priceInput = document.getElementById("containerPrice")
+          const itemName = document.getElementById("itemName").value
+          const price = parseNumber(priceInput.value)
 
           if (price === 0) {
-            alert("Price is required!");
-            return;
+            alert("Price is required!")
+            return
           }
 
-          let newItem = { type: currentItemType, name: itemName, price: price };
+          let newItem = { type: currentItemType, name: itemName, price: price }
 
           if (currentItemType === "hilsa_mon") {
             newItem.hilsaInfo = {
               monPrice: parseNumber(
-                document.getElementById("hilsaPrice").value
+                document.getElementById("hilsaPrice").value,
               ),
               mon: parseFloat(document.getElementById("mon").value) || 0,
               kg: parseFloat(document.getElementById("kg").value) || 0,
               gram: parseFloat(document.getElementById("gram").value) || 0,
-            };
-          }
-
-          if (isEditing) {
-            items[editIndex] = { ...newItem, serial: items[editIndex].serial };
-            isEditing = false;
-            editIndex = null;
-          } else {
-            newItem.serial = items.length + 1;
-            items.push(newItem);
-            // Only clear the form data after adding a NEW item
-            if (currentItemType === "hilsa_mon") {
-              clearHilsaMonData();
             }
           }
 
-          localStorage.setItem("hilsaAppItems", JSON.stringify(items));
-          renderItems();
-          renderForm(currentItemType);
-          addItemBtn.textContent = "Add Item";
-        });
+          if (isEditing) {
+            items[editIndex] = { ...newItem, serial: items[editIndex].serial }
+            isEditing = false
+            editIndex = null
+          } else {
+            newItem.serial = items.length + 1
+            items.push(newItem)
+            // Only clear the form data after adding a NEW item
+            if (currentItemType === "hilsa_mon") {
+              clearHilsaMonData()
+            }
+          }
+
+          localStorage.setItem("hilsaAppItems", JSON.stringify(items))
+          renderItems()
+          renderForm(currentItemType)
+          addItemBtn.textContent = "Add Item"
+        })
 
         // --- Render Items ---
         const renderItems = () => {
-          const items = JSON.parse(localStorage.getItem("hilsaAppItems")) || [];
-          hilsaItemsListDiv.innerHTML = "";
-          mixItemsListDiv.innerHTML = "";
-          let total = 0;
+          const items = JSON.parse(localStorage.getItem("hilsaAppItems")) || []
+          hilsaItemsListDiv.innerHTML = ""
+          mixItemsListDiv.innerHTML = ""
+          let total = 0
 
           const hilsaMonItems = items.filter(
-            (item) => item.type === "hilsa_mon"
-          );
-          const mixFishItems = items.filter((item) => item.type === "mix_fish");
+            (item) => item.type === "hilsa_mon",
+          )
+          const mixFishItems = items.filter((item) => item.type === "mix_fish")
 
           hilsaMonItems.forEach((item, index) => {
-            renderItem(item, items.indexOf(item), hilsaItemsListDiv);
-          });
+            renderItem(item, items.indexOf(item), hilsaItemsListDiv)
+          })
           mixFishItems.forEach((item, index) => {
-            renderItem(item, items.indexOf(item), mixItemsListDiv);
-          });
+            renderItem(item, items.indexOf(item), mixItemsListDiv)
+          })
 
-          total = items.reduce((sum, item) => sum + item.price, 0);
+          total = items.reduce((sum, item) => sum + item.price, 0)
 
-          totalAmountSpan.textContent = formatNumberWithCommas(total);
-        };
+          totalAmountSpan.textContent = formatNumberWithCommas(total)
+        }
 
         const renderItem = (item, index, parentDiv) => {
-          let nameHtml = item.name ? `<p>${item.name}</p>` : "";
-          let detailsHtml = "";
+          let nameHtml = item.name ? `<p>${item.name}</p>` : ""
+          let detailsHtml = ""
 
           if (item.type === "hilsa_mon" && item.hilsaInfo) {
-            const { monPrice, mon, kg, gram } = item.hilsaInfo;
-            detailsHtml = `<p class="hilsa-details">Mon Price: ${formatNumberWithCommas(
-              monPrice
-            )} | ${mon} Mon, ${kg} Kg, ${gram} Gram</p>`;
+            const { monPrice, mon, kg, gram } = item.hilsaInfo
+            detailsHtml = `<p class="hilsa-details">${formatNumberWithCommas(
+              monPrice,
+            )} * ${mon} mon ${kg}.${gram} kg</p>`
           }
 
-          const itemDiv = document.createElement("div");
-          itemDiv.classList.add("list-item");
+          const itemDiv = document.createElement("div")
+          itemDiv.classList.add("list-item")
           itemDiv.innerHTML = `
                     <div class="item-details">
                         <div class="item-serial">${item.serial}</div>
                         <div class="item-details-content">
                             <p><strong>${formatNumberWithCommas(
-                              item.price
+                              item.price,
                             )}</strong> ${item.name || ""}</p>
                             ${detailsHtml}
                         </div>
@@ -696,116 +705,116 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                         </button>
                     </div>
-                `;
-          parentDiv.appendChild(itemDiv);
+                `
+          parentDiv.appendChild(itemDiv)
 
           itemDiv
             .querySelector(".edit-btn")
-            .addEventListener("click", () => editItem(index));
+            .addEventListener("click", () => editItem(index))
           itemDiv
             .querySelector(".delete-btn")
-            .addEventListener("click", () => deleteItem(index));
-        };
+            .addEventListener("click", () => deleteItem(index))
+        }
 
         const editItem = (index) => {
-          const items = JSON.parse(localStorage.getItem("hilsaAppItems"));
-          const itemToEdit = items[index];
+          const items = JSON.parse(localStorage.getItem("hilsaAppItems"))
+          const itemToEdit = items[index]
 
-          currentItemType = itemToEdit.type;
+          currentItemType = itemToEdit.type
 
           document
             .querySelectorAll(".type-btn")
-            .forEach((btn) => btn.classList.remove("active"));
+            .forEach((btn) => btn.classList.remove("active"))
           if (currentItemType === "mix_fish") {
-            mixFishBtn.classList.add("active");
+            mixFishBtn.classList.add("active")
           } else {
-            hilsaMonBtn.classList.add("active");
+            hilsaMonBtn.classList.add("active")
           }
 
           // Render the form with the item's data
-          renderForm(currentItemType, itemToEdit);
-          isEditing = true;
-          editIndex = index;
-          addItemBtn.textContent = "Save Changes";
+          renderForm(currentItemType, itemToEdit)
+          isEditing = true
+          editIndex = index
+          addItemBtn.textContent = "Save Changes"
 
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        };
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        }
 
         const deleteItem = (index) => {
           const confirmation = confirm(
-            "Are you sure you want to delete this item?"
-          );
+            "Are you sure you want to delete this item?",
+          )
           if (confirmation) {
-            let items = JSON.parse(localStorage.getItem("hilsaAppItems"));
-            items.splice(index, 1);
-            items = items.map((item, i) => ({ ...item, serial: i + 1 }));
-            localStorage.setItem("hilsaAppItems", JSON.stringify(items));
-            renderItems();
+            let items = JSON.parse(localStorage.getItem("hilsaAppItems"))
+            items.splice(index, 1)
+            items = items.map((item, i) => ({ ...item, serial: i + 1 }))
+            localStorage.setItem("hilsaAppItems", JSON.stringify(items))
+            renderItems()
           }
-        };
+        }
 
         // --- Other Button Functions ---
         clearAllBtn.addEventListener("click", () => {
           const confirmation = confirm(
-            "Are you sure you want to delete all items? This action cannot be undone."
-          );
+            "Are you sure you want to delete all items? This action cannot be undone.",
+          )
           if (confirmation) {
-            localStorage.clear();
-            renderItems();
-            clearHilsaMonData();
-            renderForm(currentItemType);
+            localStorage.clear()
+            renderItems()
+            clearHilsaMonData()
+            renderForm(currentItemType)
           }
-        });
+        })
 
         downloadPdfBtn.addEventListener("click", () => {
-          const { jsPDF } = window.jspdf;
-          const doc = new jsPDF();
-          const items = JSON.parse(localStorage.getItem("hilsaAppItems")) || [];
-          const totalAmount = parseNumber(totalAmountSpan.textContent);
+          const { jsPDF } = window.jspdf
+          const doc = new jsPDF()
+          const items = JSON.parse(localStorage.getItem("hilsaAppItems")) || []
+          const totalAmount = parseNumber(totalAmountSpan.textContent)
 
-          doc.setFontSize(18);
-          doc.text("Fish Sales Report", 14, 22);
-          doc.setFontSize(12);
-          let y = 30;
+          doc.setFontSize(18)
+          doc.text("Fish Sales Report", 14, 22)
+          doc.setFontSize(12)
+          let y = 30
 
           if (items.length === 0) {
-            doc.text("No items to display.", 14, y);
+            doc.text("No items to display.", 14, y)
           } else {
             items.forEach((item, index) => {
               let itemText = `${item.serial}) ${formatNumberWithCommas(
-                item.price
-              )}`;
+                item.price,
+              )}`
               if (item.name) {
-                itemText += ` ${item.name}`;
+                itemText += ` ${item.name}`
               }
               if (item.type === "hilsa_mon" && item.hilsaInfo) {
-                const hilsa = item.hilsaInfo;
-                itemText += ` (Mon Price: ${formatNumberWithCommas(
-                  hilsa.monPrice
-                )} | ${hilsa.mon} Mon, ${hilsa.kg} Kg, ${hilsa.gram} Gram)`;
+                const hilsa = item.hilsaInfo
+                itemText += ` (${formatNumberWithCommas(
+                  hilsa.monPrice,
+                )} * ${hilsa.mon} mon ${hilsa.kg}.${hilsa.gram} kg)`
               }
-              doc.text(itemText, 14, y);
-              y += 7;
+              doc.text(itemText, 14, y)
+              y += 7
               if (y > 280) {
-                doc.addPage();
-                y = 14;
+                doc.addPage()
+                y = 14
               }
-            });
+            })
 
-            doc.line(14, y, 196, y);
-            y += 10;
-            doc.setFontSize(14);
-            doc.text(`Total: ${formatNumberWithCommas(totalAmount)}`, 14, y);
+            doc.line(14, y, 196, y)
+            y += 10
+            doc.setFontSize(14)
+            doc.text(`Total: ${formatNumberWithCommas(totalAmount)}`, 14, y)
           }
-          doc.save("fish_sales_report.pdf");
-        });
+          doc.save("fish_sales_report.pdf")
+        })
 
         // Initial setup
-        const initialFormType = "mix_fish";
-        mixFishBtn.classList.add("active");
-        renderForm(initialFormType);
-        renderItems();
-      });
+        const initialFormType = "mix_fish"
+        mixFishBtn.classList.add("active")
+        renderForm(initialFormType)
+        renderItems()
+      })
     </script>
   </body>
 </html>
