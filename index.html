@@ -497,8 +497,7 @@
       }
 
       function saveMix() {
-        const buyer =
-          document.getElementById("mix-buyer").value || "Unnamed Buyer"
+        const buyer = document.getElementById("mix-buyer").value
         const price = getCleanNum("mix-price")
         if (!price) return alert("Price is mandatory")
 
