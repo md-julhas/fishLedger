@@ -1,6 +1,6 @@
-# 🐟 Fish Wholesale App
+# 🐟 FishLedger
 
-A **vanilla JavaScript application** built to digitalize and simplify fish sales management for wholesalers and fishing boat owners. Traditionally, sellers rely on **pen and paper** to record fish container prices, calculate totals, and distribute profits. This app automates the entire process, saving valuable time and reducing manual errors.
+A **Vanilla JavaScript Application** built to digitalize and simplify fish sales management for wholesalers and fishing boat owners. Traditionally, sellers rely on **pen and paper** to record fish container prices, calculate totals, and distribute profits. This app automates the entire process, saving valuable time and reducing manual errors.
 
 ---
 
